@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: medusa-db
+    restart: always
+    environment:
+      POSTGRES_USER: medusa
+      POSTGRES_PASSWORD: medusa
+      POSTGRES_DB: medusa
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medusa"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  medusa:
+    build: .
+    container_name: medusa-backend
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
+    environment:
+      MEDUSA_CONFIG_FILE: /app/medusa-config.js
+    volumes:
+      - .:/app
+
+volumes:
+  pgdata:
