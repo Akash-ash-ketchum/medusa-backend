@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy dependencies and lockfile
 COPY package.json yarn.lock ./
-#COPY .env .env #just a dummy change
+#COPY .env .env #just a dummy change for loom video
 
 # Install dependencies
 RUN yarn install
@@ -19,7 +19,7 @@ RUN node patch-zod.js
 # Copy rest of the source code
 COPY . .
 
-# Expose Medusa's default port
+# medusa's default port
 EXPOSE 9000
 
 # Run Medusa
