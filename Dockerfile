@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy dependencies and lockfile
 COPY package.json yarn.lock ./
-COPY .env .env
+#COPY .env .env
 
 # Install dependencies
 RUN yarn install
